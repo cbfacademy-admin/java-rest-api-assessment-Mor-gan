@@ -5,7 +5,6 @@ import java.util.UUID;
 
 public interface PaymentService {
     
-    Payment getId(UUID id);
 
    List<Payment>getAllpayments(); 
 

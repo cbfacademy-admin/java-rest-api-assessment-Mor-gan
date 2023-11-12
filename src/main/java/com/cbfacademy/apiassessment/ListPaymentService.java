@@ -35,9 +35,12 @@ public class ListPaymentService implements PaymentService {
         return null;
     }
 
+
     @Override
-    public Payment cancelPayment(UUID id) {
+    public Payment cancelPayment(UUID id, Payment cancelPayment) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'cancelPayment'");
     }
+
+    
 }
