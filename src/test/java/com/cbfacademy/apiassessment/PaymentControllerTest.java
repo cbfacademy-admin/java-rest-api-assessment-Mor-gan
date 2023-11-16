@@ -49,11 +49,7 @@ public class PaymentControllerTest {
 
     @Test
     public void testCancelPayment() {
-        // Create an instance of ListPaymentService
         ListPaymentService listPaymentService = new ListPaymentService();
-
-        // Add a payment to the list (you may need to modify the values based on your
-        // Payment class)
         Payment paymentToDelete = new Payment(new BigDecimal(1000), new BigDecimal(500), "1234 5678 9012 3456",
                 "John Doe", 123);
         listPaymentService.createPayment(paymentToDelete);

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
 import com.cbfacademy.filehandler.InsufficientBalanceException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,7 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class ListPaymentService extends PaymentService {
 
-    private static final String outputFile = "/Users/bimbo/Desktop/cbfacademy/java-rest-api-assessment-Mor-gan/src/main/resources/paymentFile.json";
+    private static final String outputFile = "classpath:paymentFile.json";
     private final List<Payment> payments;
     ObjectMapper objectMapper = new ObjectMapper();
 
@@ -36,7 +37,7 @@ public class ListPaymentService extends PaymentService {
         if (!payments.isEmpty()) {
             // Payment paymenttosave = payments.get(0);
             try {
-                File outputFileObj = Paths.get(outputFile).toFile();
+                File outputFileObj = ResourceUtils.getFile(outputFile);
                 ObjectMapper mapper = new ObjectMapper();
                 mapper.writeValue(outputFileObj, payments);
                 System.out.println("File created at: " + outputFile);
