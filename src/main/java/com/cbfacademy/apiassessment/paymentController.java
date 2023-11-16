@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.cbfacademy.filehandler.InsufficientBalanceException;
 
 @RestController
 @RequestMapping("/api/payments")
@@ -32,7 +35,7 @@ public class PaymentController {
     }
 
     @PostMapping
-    public ResponseEntity<Payment> createPayment(@RequestBody Payment payments) {
+    public ResponseEntity<Payment> createPayment(@RequestBody Payment payments) throws InsufficientBalanceException {
         Payment createdNewPayment = listPaymentService.createPayment(payments);
         return new ResponseEntity<>(createdNewPayment, HttpStatus.CREATED);
     }
@@ -47,23 +50,16 @@ public class PaymentController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> cancelPayment(@PathVariable UUID id) {
+        boolean canceled = listPaymentService.cancelPayment(id);
 
-    @GetMapping("/details")
-    public ResponseEntity<List<String>> getPaymentDetails(@RequestParam UUID id) {
-        List<Payment> payments = listPaymentService.getAllPayments();
-
-        List<String> paymentDetails = new ArrayList<>();
-
-        for (Payment payment : payments) {
-            if (payment.getId().equals(id)) {
-                paymentDetails.add("Amount: " + payment.getAmount(null) + ", Payer: " + payment.getCardHolderName());
-            }
-        }
-
-        if (!paymentDetails.isEmpty()) {
-            return new ResponseEntity<>(paymentDetails, HttpStatus.OK);
+        if (canceled) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+   
+    
 }

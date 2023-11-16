@@ -3,14 +3,21 @@ package com.cbfacademy.apiassessment;
 import java.util.List;
 import java.util.UUID;
 
-public interface PaymentService {
+import com.cbfacademy.filehandler.InsufficientBalanceException;
 
-   List<Payment> getAllPayments();
+public class PaymentService {
 
-   Payment createPayment(Payment createPayment);
+   List<Payment> getAllPayments(){
+      return null;}
 
-   Payment updatePayment(UUID id, Payment updatePayment);
+   Payment createPayment(Payment createPayment) throws InsufficientBalanceException{
+      return createPayment;}
 
-   Payment cancelPayment(UUID id, Payment cancelPayment);
+   Payment updatePayment(UUID id, Payment updatePayment){
+      return updatePayment;}
 
+   boolean  cancelPayment(UUID id){
+      return false;
+      
+   }
 }

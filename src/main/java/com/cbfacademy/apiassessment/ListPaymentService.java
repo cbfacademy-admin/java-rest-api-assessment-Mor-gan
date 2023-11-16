@@ -10,23 +10,31 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.cbfacademy.filehandler.InsufficientBalanceException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
-public class ListPaymentService implements PaymentService {
+public class ListPaymentService extends PaymentService {
 
-    private static final String outputFile = "/Users/bimbo/Desktop/cbfacademy/java-rest-api-assessment-Mor-gan/src/main/java/com/cbfacademy/apiassessment/paymentFile.json";
+    private static final String outputFile = "/Users/bimbo/Desktop/cbfacademy/java-rest-api-assessment-Mor-gan/src/main/resources/paymentFile.json";
     private final List<Payment> payments;
     ObjectMapper objectMapper = new ObjectMapper();
 
     public ListPaymentService() {
         // Initialze all the instance variable inside a constructor
         this.payments = new ArrayList<>();
-        Payment defaultPayment = new Payment(new BigDecimal(4000), new BigDecimal(2000), "1141 2922 3338 4744", "Kwame",
+        Payment firstPayment = new Payment(new BigDecimal(2000), new BigDecimal(4000), "1141 2922 3338 4744", "Kwame",
                 178);
-        payments.add(defaultPayment);
+        Payment secondPayment = new Payment(new BigDecimal(3000), new BigDecimal(3500), "2233 4455 6677 8899", "Alice",
+                279);
+        Payment thirdPayment = new Payment(new BigDecimal(5000), new BigDecimal(7500), "9876 5432 1098 7654", "Bob",
+                345);
+        payments.add(firstPayment);
+        payments.add(secondPayment);
+        payments.add(thirdPayment);
 
-        if (payments.isEmpty()) {
+        if (!payments.isEmpty()) {
+            // Payment paymenttosave = payments.get(0);
             try {
                 File outputFileObj = Paths.get(outputFile).toFile();
                 ObjectMapper mapper = new ObjectMapper();
@@ -35,6 +43,8 @@ public class ListPaymentService implements PaymentService {
             } catch (IOException e) {
                 System.err.println(e.getMessage());
             }
+        } else {
+            System.out.println("File Not created");
         }
     }
 
@@ -45,15 +55,31 @@ public class ListPaymentService implements PaymentService {
 
     @Override
     public Payment createPayment(Payment createPayment) {
-        payments.add(createPayment);
-        return createPayment;
+        try {
+            BigDecimal paymentAmount = createPayment.getAmount();
+            BigDecimal cardBalance = createPayment.getBalance();
+
+            // Check if the card balance is sufficient for the payment
+            if (cardBalance.compareTo(paymentAmount) >= 0) {
+                // Deduct the payment amount from the balance
+                BigDecimal newBalance = cardBalance.subtract(paymentAmount);
+                createPayment.setNewBalance(newBalance);
+                // Add the payment to the list
+                payments.add(createPayment);
+                return createPayment; // Return the created payment on success
+            } else {
+                throw new InsufficientBalanceException("Insufficient balance for payment");
+            }
+        } catch (InsufficientBalanceException e) {
+            System.err.println(e.getMessage());
+            return null; // Return null or handle the failure case accordingly
+        }
     }
 
     @Override
     public Payment updatePayment(UUID id, Payment updatePayment) {
         for (int i = 0; i < payments.size(); i++) {
             Payment payment = payments.get(i);
-
             if (payment.getId().equals(id)) {
                 payments.set(i, updatePayment);// setting the index
                 return updatePayment;
@@ -64,10 +90,8 @@ public class ListPaymentService implements PaymentService {
     }
 
     @Override
-    public Payment cancelPayment(UUID id, Payment cancelPayment) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'cancelPayment'");
+    public boolean cancelPayment(UUID id) {
+        return payments.removeIf(delpayment -> delpayment.getId().equals(id));
     }
-    // Try Java Streams
 
 }

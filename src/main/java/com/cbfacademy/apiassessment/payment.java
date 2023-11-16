@@ -13,7 +13,7 @@ public class Payment {
     private int cvv;
 
     public Payment(BigDecimal amount, BigDecimal cardBalance, String cardNumber, String cardholderName,
-            int cvv) {
+             int cvv) {
 
         this.id = UUID.randomUUID();
         this.amount = amount;
@@ -29,14 +29,6 @@ public class Payment {
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
-    }
-
-    public BigDecimal getAmount(BigDecimal amount) {
-        return this.amount;
-    }
-
-    public BigDecimal getBalance(BigDecimal cardBalance) {
-        return this.cardBalance;
     }
 
     public void setCardNumber(String cardNumber) {
@@ -61,5 +53,17 @@ public class Payment {
 
     public int getCvv(int cvv) {
         return this.cvv;
+    }
+
+    public BigDecimal getAmount() {
+        return this.amount
+        ;
+    }
+
+    public BigDecimal getBalance() {
+        return this.cardBalance;
+    }
+
+    public void setNewBalance(BigDecimal newBalance) {
     }
 }
