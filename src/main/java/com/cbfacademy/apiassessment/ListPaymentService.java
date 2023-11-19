@@ -3,7 +3,6 @@ package com.cbfacademy.apiassessment;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -28,14 +27,13 @@ public class ListPaymentService extends PaymentService {
                 178);
         Payment secondPayment = new Payment(new BigDecimal(3000), new BigDecimal(3500), "2233 4455 6677 8899", "Alice",
                 279);
-        Payment thirdPayment = new Payment(new BigDecimal(5000), new BigDecimal(7500), "9876 5432 1098 7654", "Bob",
+        Payment thirdPayment = new Payment(new BigDecimal(3000), new BigDecimal(4500), "9876 5432 1098 7654", "Bob",
                 345);
         payments.add(firstPayment);
         payments.add(secondPayment);
         payments.add(thirdPayment);
 
         if (!payments.isEmpty()) {
-            // Payment paymenttosave = payments.get(0);
             try {
                 File outputFileObj = ResourceUtils.getFile(outputFile);
                 ObjectMapper mapper = new ObjectMapper();
@@ -55,26 +53,15 @@ public class ListPaymentService extends PaymentService {
     }
 
     @Override
-    public Payment createPayment(Payment createPayment) {
-        try {
-            BigDecimal paymentAmount = createPayment.getAmount();
-            BigDecimal cardBalance = createPayment.getBalance();
-
-            // Check if the card balance is sufficient for the payment
-            if (cardBalance.compareTo(paymentAmount) >= 0) {
-                // Deduct the payment amount from the balance
-                BigDecimal newBalance = cardBalance.subtract(paymentAmount);
-                createPayment.setNewBalance(newBalance);
-                // Add the payment to the list
-                payments.add(createPayment);
-                return createPayment; // Return the created payment on success
-            } else {
-                throw new InsufficientBalanceException("Insufficient balance for payment");
-            }
-        } catch (InsufficientBalanceException e) {
-            System.err.println(e.getMessage());
-            return null; // Return null or handle the failure case accordingly
+    public Payment processPayment(Payment createPayment) throws InsufficientBalanceException {
+        BigDecimal paymentAmount = createPayment.getAmount();
+        BigDecimal cardBalance = createPayment.getBalance();
+        if (cardBalance.compareTo(paymentAmount) >= 0) {
+            payments.add(createPayment);
+        } else {
+            throw new InsufficientBalanceException("Insufficient payment amount");
         }
+        return createPayment; // Return the created payment on success
     }
 
     @Override
@@ -85,14 +72,14 @@ public class ListPaymentService extends PaymentService {
                 payments.set(i, updatePayment);// setting the index
                 return updatePayment;
             }
-            System.out.println("my payment update ");
+            System.out.println("Your payment is succeful ");
         }
-        return null;
+        return updatePayment;
     }
 
     @Override
     public boolean cancelPayment(UUID id) {
-        return payments.removeIf(delpayment -> delpayment.getId().equals(id));
-    }
+        return payments.removeIf(payment -> payment.getId().equals(id));
 
+    }
 }

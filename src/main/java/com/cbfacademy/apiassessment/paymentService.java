@@ -7,17 +7,20 @@ import com.cbfacademy.filehandler.InsufficientBalanceException;
 
 public class PaymentService {
 
-   List<Payment> getAllPayments(){
-      return null;}
+   List<Payment> getAllPayments() {
+      return null;
+   }
 
-   Payment createPayment(Payment createPayment) throws InsufficientBalanceException{
-      return createPayment;}
+   Payment processPayment(Payment createPayment) throws InsufficientBalanceException {
+      return createPayment;
+   }
 
-   Payment updatePayment(UUID id, Payment updatePayment){
-      return updatePayment;}
+   Payment updatePayment(UUID id, Payment updatePayment) {
+      return updatePayment;
+   }
 
-   boolean  cancelPayment(UUID id){
-      return false;
-      
+   boolean cancelPayment(UUID id) {
+      return true;
+
    }
 }

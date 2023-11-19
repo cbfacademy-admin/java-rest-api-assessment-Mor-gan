@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cbfacademy.filehandler.InsufficientBalanceException;
 
 @RestController
-@RequestMapping("/api/payments")
+@RequestMapping("/api")
 public class PaymentController {
 
     private final ListPaymentService listPaymentService;
@@ -26,20 +26,20 @@ public class PaymentController {
         this.listPaymentService = listPaymentService;
     }
 
-    @GetMapping
+    @GetMapping("/payments")
     public ResponseEntity<List<Payment>> getAllPayments() {
         List<Payment> payments = listPaymentService.getAllPayments();
         return new ResponseEntity<>(payments, HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<Payment> createPayment(@RequestBody Payment payments) throws InsufficientBalanceException {
-        Payment createdNewPayment = listPaymentService.createPayment(payments);
+    @PostMapping("/processpayment")
+    public ResponseEntity<Payment> processPayment(@RequestBody Payment payments) throws InsufficientBalanceException {
+        Payment createdNewPayment = listPaymentService.processPayment(payments);
         return new ResponseEntity<>(createdNewPayment, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Payment> updatePayment(@PathVariable UUID id, @RequestBody Payment payments) {
+    public ResponseEntity<Payment> updatePayment(@PathVariable("id") UUID id, @RequestBody Payment payments) {
         Payment updatedpayment = listPaymentService.updatePayment(id, payments);
 
         if (updatedpayment != null) {
@@ -48,8 +48,9 @@ public class PaymentController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> cancelPayment(@PathVariable UUID id) {
+    public ResponseEntity<Payment> cancelPayment(@PathVariable("id") UUID id) {
         boolean canceled = listPaymentService.cancelPayment(id);
 
         if (canceled) {
@@ -58,6 +59,5 @@ public class PaymentController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-   
-    
+
 }
