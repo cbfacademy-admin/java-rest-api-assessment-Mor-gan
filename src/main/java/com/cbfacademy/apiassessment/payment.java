@@ -9,7 +9,7 @@ public class Payment {
     private BigDecimal amount;
     private BigDecimal balance;
     private String cardNumber;
-    private String cardholderName;
+    private String cardHolderName;
     private int cvv;
 
     public Payment(BigDecimal amount, BigDecimal balance, String cardNumber, String cardholderName,
@@ -19,7 +19,7 @@ public class Payment {
         this.amount = amount;
         this.cardNumber = cardNumber;
         this.balance = balance;
-        this.cardholderName = cardholderName;
+        this.cardHolderName = cardholderName;
         this.cvv = cvv;
     }
 
@@ -40,11 +40,11 @@ public class Payment {
     }
 
     public void setCardHolderName(String cardholderName) {
-        this.cardholderName = cardholderName;
+        this.cardHolderName = cardholderName;
     }
 
     public String getCardHolderName() {
-        return this.cardholderName;
+        return this.cardHolderName;
     }
 
     public void setCvv(int cvv) {

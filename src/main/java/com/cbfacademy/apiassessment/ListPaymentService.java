@@ -72,7 +72,7 @@ public class ListPaymentService extends PaymentService {
                 payments.set(i, updatePayment);// setting the index
                 return updatePayment;
             }
-            System.out.println("Your payment is succeful ");
+            System.out.println("Your payment is successful ");
         }
         return updatePayment;
     }
@@ -80,6 +80,5 @@ public class ListPaymentService extends PaymentService {
     @Override
     public boolean cancelPayment(UUID id) {
         return payments.removeIf(payment -> payment.getId().equals(id));
-
     }
 }
