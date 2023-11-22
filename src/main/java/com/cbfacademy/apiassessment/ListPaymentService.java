@@ -59,9 +59,9 @@ public class ListPaymentService extends PaymentService {
         if (cardBalance.compareTo(paymentAmount) >= 0) {
             payments.add(createPayment);
         } else {
-            throw new InsufficientBalanceException("Insufficient payment amount");
+            throw new InsufficientBalanceException("Insufficient Payment amount");
         }
-        return createPayment; // Return the created payment on success
+        return createPayment; // Return the created Payment on success
     }
 
     @Override
@@ -72,7 +72,7 @@ public class ListPaymentService extends PaymentService {
                 payments.set(i, updatePayment);// setting the index
                 return updatePayment;
             }
-            System.out.println("Your payment is successful ");
+            System.out.println("Your Payment is successful ");
         }
         return updatePayment;
     }

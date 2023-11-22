@@ -20,19 +20,19 @@ import java.util.UUID;
 
 public class PaymentControllerTest {
 
-    private PaymentController paymentController;
+    private PaymentController PaymentController;
     private ListPaymentService listPaymentService;
     // private URI baseURI;
 
     @BeforeEach
     void setUp() {
         listPaymentService = new ListPaymentService(); // to create a test-specific implementation
-        paymentController = new PaymentController(listPaymentService);
+        PaymentController = new PaymentController(listPaymentService);
     }
 
     @Test
     void testGetAllPayments() {
-        ResponseEntity<List<Payment>> responseEntity = paymentController.getAllPayments();
+        ResponseEntity<List<Payment>> responseEntity = PaymentController.getAllPayments();
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 
         List<Payment> payments = responseEntity.getBody();
@@ -44,7 +44,7 @@ public class PaymentControllerTest {
         Payment newPayment = new Payment(new BigDecimal(200), new BigDecimal(670), "9876 5432 1098 7654", "Jane Doe",
                 456);
 
-        ResponseEntity<Payment> responseEntity = paymentController.processPayment(newPayment);
+        ResponseEntity<Payment> responseEntity = PaymentController.processPayment(newPayment);
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
 
         Payment createdPayment = responseEntity.getBody();
