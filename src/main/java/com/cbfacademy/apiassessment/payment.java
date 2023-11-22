@@ -3,6 +3,7 @@ package com.cbfacademy.apiassessment;
 import java.math.BigDecimal;
 import java.util.UUID;
 
+//Payment file is uppercase
 public class Payment {
 
     private final UUID id;
